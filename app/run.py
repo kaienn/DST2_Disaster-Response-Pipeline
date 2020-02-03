@@ -45,6 +45,10 @@ def index():
     #category count
     category_count = df.drop(['id','message','original','genre'], axis=1).sum()
     category_names = list(category_count.index)
+    # Top five categories count
+    top5_category_count = df.iloc[:,4:].sum().sort_values(ascending=False)[1:6]
+    top5_category_names = list(top5_category_count.index)
+   
    
     # create visuals
     graphs = [
@@ -84,7 +88,27 @@ def index():
                     'title': "Categories"
                 }
             }
+        },
+        
+        {
+            'data': [
+                Bar(
+                    x=top5_category_names,
+                    y=top5_category_count
+                )
+            ],
+
+            'layout': {
+                'title': 'Top Five Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Categories"
+                }
+            }
         }
+        
     ]
     
     # encode plotly graphs in JSON
